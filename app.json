@@ -46,6 +46,12 @@
           "supportsBackgroundPlayback": true,
           "supportsPictureInPicture": true
         }
+      ],
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
       ]
     ],
     "experiments": {
