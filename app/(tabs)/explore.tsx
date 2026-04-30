@@ -1,15 +1,27 @@
+import { useEvent } from 'expo';
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 
-import { Collapsible } from '@/components/ui/collapsible';
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Collapsible } from '@/components/ui/collapsible';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 
+const videoSource =
+  'https://www.w3schools.com/html/movie.mp4';
+
 export default function TabTwoScreen() {
+  const player = useVideoPlayer(videoSource, player => {
+    player.loop = true;
+    player.play();
+  });
+
+  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -30,6 +42,7 @@ export default function TabTwoScreen() {
           Explore
         </ThemedText>
       </ThemedView>
+      <VideoView style={styles.video} player={player} allowsFullscreen allowsPictureInPicture />
       <ThemedText>This app includes example code to help you get started.</ThemedText>
       <Collapsible title="File-based routing">
         <ThemedText>
@@ -108,5 +121,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
+  },
+  video: {
+    left: -24,
+    width: Dimensions.get("screen").width - 16,
+    height: 275,
   },
 });
